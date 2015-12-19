@@ -1,25 +1,99 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="byL-YR-hSB">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <scene sceneID="V0J-sG-H5Q">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="P4J-dR-qCm" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                        <viewControllerLayoutGuide type="top" id="ObH-0G-YHm"/>
+                        <viewControllerLayoutGuide type="bottom" id="dBA-L2-GwY"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="zF8-Ed-PhQ">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <tabBarItem key="tabBarItem" systemItem="contacts" id="Kva-gZ-ngk"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iMT-yh-lpH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="435" y="722"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="0YE-73-q9O">
+            <objects>
+                <viewController id="pJj-MM-2oj" customClass="ViewController" customModule="MyAdvancedRecorder" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Yxu-tH-dH5"/>
+                        <viewControllerLayoutGuide type="bottom" id="pBD-HM-hmq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Zm9-fz-ufy">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A08-6b-EY0">
+                                <rect key="frame" x="340" y="252" width="96" height="96"/>
+                                <state key="normal" title="Play Record" image="playRecord"/>
+                                <connections>
+                                    <action selector="playRecord:" destination="pJj-MM-2oj" eventType="touchUpInside" id="xWN-R7-PK3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V2f-QK-X8L">
+                                <rect key="frame" x="165" y="252" width="96" height="96"/>
+                                <state key="normal" image="startRecord"/>
+                                <connections>
+                                    <action selector="record:" destination="pJj-MM-2oj" eventType="touchUpInside" id="dYw-fz-Mh8"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ojl-a9-qPr">
+                                <rect key="frame" x="138" y="378" width="324" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HaB-Od-8MT">
+                                <rect key="frame" x="225" y="436" width="150" height="2"/>
+                            </progressView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="pNe-8d-Qha"/>
+                    <connections>
+                        <outlet property="playButton" destination="A08-6b-EY0" id="r4j-Wi-eQ3"/>
+                        <outlet property="recordButton" destination="V2f-QK-X8L" id="Jhn-H5-rSg"/>
+                        <outlet property="volumeLabel" destination="Ojl-a9-qPr" id="BHY-aS-vAk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="M6J-ag-qH9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="435" y="61"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="4Qy-TO-fy8">
+            <objects>
+                <tabBarController id="byL-YR-hSB" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="QmI-vo-2Jz">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="pJj-MM-2oj" kind="relationship" relationship="viewControllers" id="l5F-LF-j4W"/>
+                        <segue destination="P4J-dR-qCm" kind="relationship" relationship="viewControllers" id="9Nk-0E-YuU"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="98Y-Th-eXo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-385" y="392"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="playRecord" width="96" height="96"/>
+        <image name="startRecord" width="96" height="96"/>
+    </resources>
 </document>
