@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="14F27" minimumToolsVersion="Automatic">
     <entity name="MyRecordFile" syncable="YES">
+        <attribute name="duration" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="saveDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordDate" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="MyRecordFile" positionX="-63" positionY="-18" width="128" height="75"/>
+        <element name="MyRecordFile" positionX="-63" positionY="-18" width="128" height="90"/>
     </elements>
 </model>

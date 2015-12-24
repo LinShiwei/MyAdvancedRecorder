@@ -11,6 +11,8 @@ import UIKit
 class FileListTableViewCell: UITableViewCell {
 
     @IBOutlet weak var fileNameLabel: UILabel!
+    @IBOutlet weak var recordDateLabel: UILabel!
+    @IBOutlet weak var recordDurationLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

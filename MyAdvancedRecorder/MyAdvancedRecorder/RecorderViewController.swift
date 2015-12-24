@@ -40,11 +40,28 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     @IBOutlet weak var volumeLabel: UILabel!
     @IBOutlet weak var volumeProgress: UIProgressView!
     @IBOutlet weak var fileNameLabel: UILabel!
+    var fileNameIndexPathRow :Int?
+    
     /// 录音按钮
     @IBOutlet weak var recordButton: UIButton!
     /// 播放按钮
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var fileListTableView: FileListTableView!
+    
+    @IBAction func editFileNameButton(sender: AnyObject) {
+        stopRecordAndPlay()
+        let alert = UIAlertController(title: "设置新名称", message: nil, preferredStyle: .Alert)
+        let saveAction = UIAlertAction(title: "保存", style: .Default,handler: { (action:UIAlertAction) -> Void in
+            let textField = alert.textFields!.first
+            self.saveFileName(textField!.text!)
+            self.fileListTableView.reloadData()
+        })
+        let cancelAction = UIAlertAction(title: "取消", style: .Default) { (action: UIAlertAction) -> Void in }
+        alert.addTextFieldWithConfigurationHandler { (textField: UITextField) -> Void in }
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        presentViewController(alert, animated: true, completion: nil)
+    }
     @IBAction func playRecord(sender: AnyObject) {
         if !isPlaying {
             startPlay()
@@ -98,14 +115,11 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     }
     func startRecord() {
         accPath = newRecordURL()
-        NSLog("start record:   \(accPath) ")
-        
         isRecording = !isRecording
         recordButton.setImage(UIImage.init(named: "stopRecord"),forState: UIControlState.Normal)
         do{
             /// init the recorder object
             recorder = try AVAudioRecorder(URL: NSURL(string: accPath!)!, settings: recorderSettingDic!)
-            
         }
         catch let error as NSError {
             print("Could not save \(error), \(error.userInfo)")
@@ -123,6 +137,9 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     func stopRecord() {
         isRecording = !isRecording
         recordButton.setImage(UIImage.init(named: "startRecord"),forState: UIControlState.Normal)
+        let recordDuration = recorder!.currentTime
+        myRecordFile[fileNameIndexPathRow!].setValue(recordDuration, forKey: "duration")
+        saveToCoreData()
         recorder!.stop()
         print("stop")
         
@@ -168,20 +185,20 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         initMyRecordFile()
         playButton.enabled = false
         if myRecordFile.count > 0 {
-            accPath = appFilePath + (myRecordFile[myRecordFile.count-1].valueForKey("fileName")?.description)!
+            accPath = appFilePath + (myRecordFile[myRecordFile.count-1].valueForKey("fileName")?.description)! + ".acc"
             playButton.enabled = true
         }
 
-        
-        let tempManager = NSFileManager.defaultManager()
-        let path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0]
-        do{
-            let pathString = try tempManager.contentsOfDirectoryAtPath(path)
-            NSLog("\(pathString),")
-            
-        }catch let error as NSError {
-            print("Could not fetch \(error), \(error.userInfo)")
-        }
+//        
+//        let tempManager = NSFileManager.defaultManager()
+//        let path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0]
+//        do{
+//            let pathString = try tempManager.contentsOfDirectoryAtPath(path)
+//            NSLog("\(pathString),")
+//            
+//        }catch let error as NSError {
+//            print("Could not fetch \(error), \(error.userInfo)")
+//        }
         
         
     }
@@ -227,45 +244,18 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         }
     }
     
-    func newRecordURL() -> String{
-        let designDate = NSDate()
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd_HH:mm:ss"
-        let designDateString = dateFormatter.stringFromDate(designDate)
-        let fileName = designDateString + ".acc"
-        let path = appFilePath + fileName
-
-        //在数据中插入新项
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
-        //2
-        let entity = NSEntityDescription.entityForName("MyRecordFile", inManagedObjectContext:managedContext)
-        let recordFile = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
-        //3
-        recordFile.setValue(fileName, forKey: "fileName")
-        recordFile.setValue(designDateString, forKey: "saveDate")
-        //4
-        do {
-            //下面这一步是是修改的结果保存到coredata中，前面几步只是在managedObjectContext中进行修改，还没有真正保存
-            try managedContext.save()
-            myRecordFile.append(recordFile)
-       
-        }
-        catch let error as NSError {
-            print("Could not save \(error), \(error.userInfo)")
-        }
-        
-        
-        return path
-    }
     
     // MARK: tableview Datasourse
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("fileListCell", forIndexPath: indexPath) as! FileListTableViewCell
         let recordFile = myRecordFile[indexPath.row]
-        cell.fileNameLabel.text = recordFile.valueForKey("saveDate")?.description
+        cell.fileNameLabel.text = recordFile.valueForKey("fileName")?.description
+        cell.recordDateLabel.text = recordFile.valueForKey("recordDate")?.description
+        let intDuration = Int((recordFile.valueForKey("duration") as! Double))
+        cell.recordDurationLabel.text = "Duration:" + String(intDuration) + " s"
         let cellSelectColorView = UIView()
         cellSelectColorView.backgroundColor = UIColor(white: 0.5, alpha: 1)
+        cellSelectColorView.layer.masksToBounds = true
         cell.selectedBackgroundView = cellSelectColorView
         return cell
     }
@@ -282,7 +272,7 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         if editingStyle == .Delete {
             
             let fileManager = NSFileManager.defaultManager()
-            let path = appFilePath + myRecordFile[indexPath.row].valueForKey("fileName")!.description
+            let path = appFilePath + myRecordFile[indexPath.row].valueForKey("fileName")!.description + ".acc"
             do{
                 try fileManager.removeItemAtPath(path)
                 
@@ -309,8 +299,9 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
             playButton.enabled = false
             player = nil
             if myRecordFile.count > 0 {
-                accPath = appFilePath + (myRecordFile[myRecordFile.count-1].valueForKey("fileName")?.description)!
+                accPath = appFilePath + (myRecordFile[myRecordFile.count-1].valueForKey("fileName")?.description)! + ".acc"
                 playButton.enabled = true
+                
             }
             // Delete the row from the data source
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
@@ -326,7 +317,45 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let recordFile = myRecordFile[indexPath.row]
         fileNameLabel.text = recordFile.valueForKey("fileName")?.description
-        accPath = appFilePath + (recordFile.valueForKey("fileName")?.description)!
+        fileNameIndexPathRow = indexPath.row
+        accPath = appFilePath + (recordFile.valueForKey("fileName")?.description)! + ".acc"
+        stopRecordAndPlay()
+    }
+    //MARK: 自定义函数
+    func newRecordURL() -> String{
+        let designDate = NSDate()
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd_HH:mm:ss"
+        let designDateString = dateFormatter.stringFromDate(designDate)
+        let fileName = designDateString
+        let path = appFilePath + fileName + ".acc"
+        
+        //在数据中插入新项
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
+        //2
+        let entity = NSEntityDescription.entityForName("MyRecordFile", inManagedObjectContext:managedContext)
+        let recordFile = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+        //3
+        recordFile.setValue(fileName, forKey: "fileName")
+        recordFile.setValue(designDateString, forKey: "recordDate")
+        //4
+        do {
+            //下面这一步是是修改的结果保存到coredata中，前面几步只是在managedObjectContext中进行修改，还没有真正保存
+            try managedContext.save()
+            myRecordFile.append(recordFile)
+            fileNameLabel.text = fileName
+            fileNameIndexPathRow = myRecordFile.count - 1
+        }
+        catch let error as NSError {
+            print("Could not save \(error), \(error.userInfo)")
+        }
+        
+        
+        return path
+    }
+
+    func stopRecordAndPlay() {
         if isPlaying {
             pausePlay()
         }
@@ -335,7 +364,35 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
             stopRecord()
             fileListTableView.reloadData()
         }
-        volumeLabel.text = "000"
+        volumeLabel.text = "stop success"
+    }
+    func saveFileName(name:String) {
+        let tempManager = NSFileManager.defaultManager()
+        do{
+            let path = appFilePath + fileNameLabel.text! + ".acc"
+            let toPath = appFilePath + name + ".acc"
+            try tempManager.moveItemAtPath(path, toPath: toPath)
+            
+        }catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        
+        fileNameLabel.text = name
+        
+        myRecordFile[fileNameIndexPathRow!].setValue(name, forKey: "fileName")
+        accPath = appFilePath + name + ".acc"
+        saveToCoreData()
+    }
+    func saveToCoreData() {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
+        do {
+            //下面这一步是是修改的结果保存到coredata中
+            try managedContext.save()
+        }
+        catch let error as NSError {
+            print("Could not save \(error), \(error.userInfo)")
+        }
     }
 }
 

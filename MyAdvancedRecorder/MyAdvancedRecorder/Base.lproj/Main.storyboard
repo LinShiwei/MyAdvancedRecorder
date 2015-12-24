@@ -17,21 +17,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A08-6b-EY0">
-                                <rect key="frame" x="356" y="1184" width="96" height="96"/>
-                                <state key="normal" title="Play Record" image="playRecord"/>
-                                <connections>
-                                    <action selector="playRecord:" destination="pJj-MM-2oj" eventType="touchUpInside" id="xWN-R7-PK3"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V2f-QK-X8L">
-                                <rect key="frame" x="170" y="1184" width="96" height="96"/>
+                                <rect key="frame" x="100" y="1211" width="96" height="96"/>
                                 <state key="normal" image="startRecord"/>
                                 <connections>
                                     <action selector="record:" destination="pJj-MM-2oj" eventType="touchUpInside" id="dYw-fz-Mh8"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BGV-xz-jhU" customClass="FileListTableView" customModule="MyAdvancedRecorder" customModuleProvider="target">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BGV-xz-jhU" customClass="FileListTableView" customModule="MyAdvancedRecorder" customModuleProvider="target">
                                 <rect key="frame" x="20" y="83" width="984" height="1033"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.2412849406" green="1" blue="0.057307983350000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -39,16 +32,34 @@
                                 <color key="sectionIndexTrackingBackgroundColor" red="0.26380360310000001" green="0.56889525159999998" blue="0.84266493060000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="fileListCell" id="Uz9-Sb-ByS" customClass="FileListTableViewCell" customModule="MyAdvancedRecorder" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="984" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="984" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uz9-Sb-ByS" id="HaP-gJ-ay0">
-                                            <rect key="frame" x="0.0" y="0.0" width="984" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="984" height="89"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q6e-zI-M85">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="File name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q6e-zI-M85">
                                                     <rect key="frame" x="8" y="14" width="625" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="0.077715197099999994" blue="0.089377302229999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Record length" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D9K-kN-OY6">
+                                                    <rect key="frame" x="788" y="14" width="188" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="KB" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hh4-Ov-J94">
+                                                    <rect key="frame" x="720" y="60" width="256" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Record Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="09x-wT-uPC">
+                                                    <rect key="frame" x="8" y="60" width="270" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -56,6 +67,8 @@
                                         <color key="backgroundColor" red="0.6067313762626263" green="0.6067313762626263" blue="0.6067313762626263" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="fileNameLabel" destination="Q6e-zI-M85" id="YMj-Ap-7ot"/>
+                                            <outlet property="recordDateLabel" destination="09x-wT-uPC" id="E6W-t1-R34"/>
+                                            <outlet property="recordDurationLabel" destination="D9K-kN-OY6" id="bUR-ls-Fgx"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -73,12 +86,26 @@
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HaB-Od-8MT">
                                 <rect key="frame" x="532" y="1176" width="150" height="2"/>
                             </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="upM-nf-jFB">
-                                <rect key="frame" x="170" y="1139" width="278" height="25"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FileName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="upM-nf-jFB">
+                                <rect key="frame" x="141" y="1145" width="312" height="33"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v4o-g0-vr9">
+                                <rect key="frame" x="100" y="1145" width="32" height="32"/>
+                                <state key="normal" title="Button" image="edit"/>
+                                <connections>
+                                    <action selector="editFileNameButton:" destination="pJj-MM-2oj" eventType="touchUpInside" id="P5b-Yg-oEW"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A08-6b-EY0">
+                                <rect key="frame" x="305" y="1211" width="96" height="96"/>
+                                <state key="normal" title="Play Record" image="playRecord"/>
+                                <connections>
+                                    <action selector="playRecord:" destination="pJj-MM-2oj" eventType="touchUpInside" id="xWN-R7-PK3"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -119,6 +146,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="edit" width="32" height="32"/>
         <image name="playRecord" width="96" height="96"/>
         <image name="startRecord" width="96" height="96"/>
     </resources>
