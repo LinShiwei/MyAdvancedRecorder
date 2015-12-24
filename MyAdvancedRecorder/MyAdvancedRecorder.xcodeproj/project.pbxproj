@@ -7,21 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		566C892F1C29730A007CCDC7 /* FileListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566C892E1C29730A007CCDC7 /* FileListTableViewController.swift */; };
 		566C89311C297386007CCDC7 /* FileListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566C89301C297386007CCDC7 /* FileListTableViewCell.swift */; };
-		56E3FAC01C2A28DA000BE3FE /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E3FABF1C2A28DA000BE3FE /* PlayerViewController.swift */; };
 		56EF2EE61C223ECA00A66F5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EF2EE51C223ECA00A66F5C /* AppDelegate.swift */; };
 		56EF2EE81C223ECA00A66F5C /* RecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EF2EE71C223ECA00A66F5C /* RecorderViewController.swift */; };
 		56EF2EEB1C223ECA00A66F5C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56EF2EE91C223ECA00A66F5C /* Main.storyboard */; };
 		56EF2EEE1C223ECA00A66F5C /* MyAdvancedRecorder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 56EF2EEC1C223ECA00A66F5C /* MyAdvancedRecorder.xcdatamodeld */; };
 		56EF2EF01C223ECA00A66F5C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56EF2EEF1C223ECA00A66F5C /* Assets.xcassets */; };
 		56EF2EF31C223ECA00A66F5C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56EF2EF11C223ECA00A66F5C /* LaunchScreen.storyboard */; };
+		56F4792A1C2BAFD800601951 /* FileListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F479291C2BAFD800601951 /* FileListTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		566C892E1C29730A007CCDC7 /* FileListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListTableViewController.swift; sourceTree = "<group>"; };
 		566C89301C297386007CCDC7 /* FileListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListTableViewCell.swift; sourceTree = "<group>"; };
-		56E3FABF1C2A28DA000BE3FE /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		56EF2EE21C223ECA00A66F5C /* MyAdvancedRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyAdvancedRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56EF2EE51C223ECA00A66F5C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56EF2EE71C223ECA00A66F5C /* RecorderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderViewController.swift; sourceTree = "<group>"; };
@@ -30,6 +27,7 @@
 		56EF2EEF1C223ECA00A66F5C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56EF2EF21C223ECA00A66F5C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56EF2EF41C223ECA00A66F5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56F479291C2BAFD800601951 /* FileListTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,12 +63,11 @@
 				56EF2EE51C223ECA00A66F5C /* AppDelegate.swift */,
 				56EF2EE71C223ECA00A66F5C /* RecorderViewController.swift */,
 				56EF2EE91C223ECA00A66F5C /* Main.storyboard */,
+				56F479291C2BAFD800601951 /* FileListTableView.swift */,
+				566C89301C297386007CCDC7 /* FileListTableViewCell.swift */,
 				56EF2EEF1C223ECA00A66F5C /* Assets.xcassets */,
 				56EF2EF11C223ECA00A66F5C /* LaunchScreen.storyboard */,
 				56EF2EF41C223ECA00A66F5C /* Info.plist */,
-				566C892E1C29730A007CCDC7 /* FileListTableViewController.swift */,
-				566C89301C297386007CCDC7 /* FileListTableViewCell.swift */,
-				56E3FABF1C2A28DA000BE3FE /* PlayerViewController.swift */,
 				56EF2EEC1C223ECA00A66F5C /* MyAdvancedRecorder.xcdatamodeld */,
 			);
 			path = MyAdvancedRecorder;
@@ -149,11 +146,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				56EF2EE81C223ECA00A66F5C /* RecorderViewController.swift in Sources */,
-				566C892F1C29730A007CCDC7 /* FileListTableViewController.swift in Sources */,
+				56F4792A1C2BAFD800601951 /* FileListTableView.swift in Sources */,
 				56EF2EE61C223ECA00A66F5C /* AppDelegate.swift in Sources */,
 				56EF2EEE1C223ECA00A66F5C /* MyAdvancedRecorder.xcdatamodeld in Sources */,
 				566C89311C297386007CCDC7 /* FileListTableViewCell.swift in Sources */,
-				56E3FAC01C2A28DA000BE3FE /* PlayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
