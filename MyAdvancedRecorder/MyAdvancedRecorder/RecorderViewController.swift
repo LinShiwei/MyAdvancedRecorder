@@ -17,7 +17,7 @@
 import UIKit
 import AVFoundation
 import CoreData
-class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableViewDelegate{
+class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableViewDelegate,AVAudioPlayerDelegate{
     // MARK:变量定义
     /// 录音路径
     let appFilePath = (NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0]) + "/"
@@ -36,18 +36,21 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     var accPath:String?
     /// 定时器线程，循环监测录音的音量大小
     var volumeTimer:NSTimer!
-    /// 录音音量标签，用来显示音量大小
+    var fileNameIndexPathRow :Int?
     @IBOutlet weak var volumeLabel: UILabel!
     @IBOutlet weak var volumeProgress: UIProgressView!
     @IBOutlet weak var fileNameLabel: UILabel!
-    var fileNameIndexPathRow :Int?
-    
-    /// 录音按钮
+    @IBOutlet weak var playerSlider: UISlider!
     @IBOutlet weak var recordButton: UIButton!
-    /// 播放按钮
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var fileListTableView: FileListTableView!
     
+    @IBAction func sliderChanged(sender: AnyObject) {
+        player?.stop()
+        player?.currentTime = Double(playerSlider.value)
+        player?.prepareToPlay()
+        player?.play()
+    }
     @IBAction func editFileNameButton(sender: AnyObject) {
         stopRecordAndPlay()
         let alert = UIAlertController(title: "设置新名称", message: nil, preferredStyle: .Alert)
@@ -68,7 +71,6 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         }else{
             pausePlay()
         }
-        
     }
     func startPlay(){
         isPlaying = !isPlaying
@@ -76,20 +78,20 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         if player == nil{
             do{
                 player = try AVAudioPlayer(contentsOfURL: NSURL(string: accPath!)!)
-                player!.prepareToPlay()
-                
             }
             catch let error as NSError {
                 print("Could not save \(error), \(error.userInfo)")
             }
         }
+        player!.delegate = self
         //开启仪表计数功能
         player!.meteringEnabled = true
         volumeTimer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self,
-            selector: "levelTimer", userInfo: nil, repeats: true)
+            selector: "playTimer", userInfo: nil, repeats: true)
+        playerSlider.maximumValue = Float(player!.duration)
+//        playerSlider.addTarget(self, action: "sliderChanged", forControlEvents: UIControlEvents.ValueChanged)
+        player!.prepareToPlay()
         player!.play()
-        print("play")
-        
         recordButton.enabled = false
     }
     func pausePlay(){
@@ -101,10 +103,14 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         volumeTimer.invalidate()
         volumeTimer = nil
     }
-//    func stopPlay() {
-//        player!.stop()
-//        player = nil
-//    }
+    func stopPlay(){
+        isPlaying = !isPlaying
+        playButton.setImage(UIImage.init(named: "playRecord"), forState: UIControlState.Normal)
+        recordButton.enabled = true
+        player!.stop()
+        volumeTimer.invalidate()
+        volumeTimer = nil
+    }
     @IBAction func record(sender: AnyObject) {
         if isRecording {
             stopRecord()
@@ -122,14 +128,14 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
             recorder = try AVAudioRecorder(URL: NSURL(string: accPath!)!, settings: recorderSettingDic!)
         }
         catch let error as NSError {
-            print("Could not save \(error), \(error.userInfo)")
+            print("Could not init recorder \(error), \(error.userInfo)")
         }
-        print("\(recorder!.prepareToRecord())，perpare")
-        print("\(recorder!.record())，start")
+        recorder!.prepareToRecord()
+        recorder!.record()
         //开启仪表计数功能
         recorder!.meteringEnabled = true
         volumeTimer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self,
-            selector: "levelTimer", userInfo: nil, repeats: true)
+            selector: "recordTimer", userInfo: nil, repeats: true)
         
         playButton.enabled = false
         player = nil
@@ -141,8 +147,6 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         myRecordFile[fileNameIndexPathRow!].setValue(recordDuration, forKey: "duration")
         saveToCoreData()
         recorder!.stop()
-        print("stop")
-        
         //暂停定时器
         volumeTimer.invalidate()
         volumeTimer = nil
@@ -157,38 +161,26 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         super.viewDidLoad()
         
         // Do any additional setup after loading the view, typically from a nib.
-        view.backgroundColor = UIColor(white: 0.3, alpha: 1)
-        
         isRecording = false
         isPlaying = false
-        playButton.enabled = false
-        /// 初始化录音器
-        let session:AVAudioSession = AVAudioSession.sharedInstance()
-        
-        /// 设置录音类型
-        try! session.setCategory(AVAudioSessionCategoryPlayAndRecord)
-        /// 设置支持后台
-        try! session.setActive(true)
+        initSession()
         recorderSettingDic=[
             AVFormatIDKey:NSNumber(unsignedInt: kAudioFormatMPEG4AAC),
             AVNumberOfChannelsKey:2,
-            AVEncoderAudioQualityKey:AVAudioQuality.Max.rawValue,
+            AVEncoderAudioQualityKey:AVAudioQuality.Medium.rawValue,
             AVEncoderBitRateKey:320000,
             AVSampleRateKey:44100.0
         ]
-        
+        view.backgroundColor = UIColor(white: 0.3, alpha: 1)
         fileListTableView.backgroundView = UIView.init()
         fileListTableView.backgroundView?.backgroundColor = UIColor(white: 0.4, alpha: 1)
+        
+        initMyRecordFile()
+        initPlayButton()
+
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        initMyRecordFile()
-        playButton.enabled = false
-        if myRecordFile.count > 0 {
-            accPath = appFilePath + (myRecordFile[myRecordFile.count-1].valueForKey("fileName")?.description)! + ".acc"
-            playButton.enabled = true
-        }
-
 //        
 //        let tempManager = NSFileManager.defaultManager()
 //        let path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0]
@@ -199,17 +191,11 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
 //        }catch let error as NSError {
 //            print("Could not fetch \(error), \(error.userInfo)")
 //        }
-        
-        
     }
     func initMyRecordFile() {
-        // 从coredata中获取数据
-        //1
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
-        //2
         let fetchRequest = NSFetchRequest(entityName: "MyRecordFile")
-        //3
         do {
             let path = try managedContext.executeFetchRequest(fetchRequest)
             myRecordFile = path as! [NSManagedObject]
@@ -217,7 +203,25 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
             print("Could not fetch \(error), \(error.userInfo)")
         }
     }
-
+    func initSession(){
+        /// 初始化录音器
+        let session:AVAudioSession = AVAudioSession.sharedInstance()
+        /// 设置录音类型
+        try! session.setCategory(AVAudioSessionCategoryPlayAndRecord)
+        /// 设置支持后台
+        try! session.setActive(true)
+    }
+    func initPlayButton(){
+        player = nil
+        playButton.enabled = false
+        if myRecordFile.count > 0 {
+            let fileName = myRecordFile[myRecordFile.count-1].valueForKey("fileName")?.description
+            accPath = appFilePath + fileName! + ".acc"
+            playButton.enabled = true
+            fileNameLabel.text = fileName
+            fileNameIndexPathRow = myRecordFile.count-1
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -226,25 +230,27 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     /**
      定时器响应函数，定时更新录音音量大小
      */
-    func levelTimer(){
-        if isRecording {
-            recorder!.updateMeters() // 刷新音量数据
-            let maxVolumedB:Float = recorder!.peakPowerForChannel(0) //获取音量最大值
-            let maxVolume:Double = pow(Double(10), Double(maxVolumedB/10))
-            volumeProgress.progress = Float(maxVolume)
-            //        volumeProgress.progress = (maxVolumedB / 160)+1.0
-            volumeLabel.text = "录音音量:\(volumeProgress.progress)"
-        }
-        if isPlaying {
-            player!.updateMeters() // 刷新音量数据
-            let maxVolumedB:Float = player!.peakPowerForChannel(0) //获取音量最大值
-            let maxVolume:Double = pow(Double(10), Double(maxVolumedB/10))
-            volumeProgress.progress = Float(maxVolume)
-            volumeLabel.text = "播放音量:\(volumeProgress.progress)"
+    func playTimer(){
+        player!.updateMeters() // 刷新音量数据
+        let maxVolumedB:Float = player!.peakPowerForChannel(0) //获取音量最大值
+        let maxVolume:Double = pow(Double(10), Double(maxVolumedB/10))
+        volumeProgress.progress = Float(maxVolume)
+        volumeLabel.text = "播放音量:\(volumeProgress.progress)"
+        playerSlider.value = Float(player!.currentTime)
+    }
+    func recordTimer(){
+        recorder!.updateMeters() // 刷新音量数据
+        let maxVolumedB:Float = recorder!.peakPowerForChannel(0) //获取音量最大值
+        let maxVolume:Double = pow(Double(10), Double(maxVolumedB/10))
+        volumeProgress.progress = Float(maxVolume)
+        volumeLabel.text = "录音音量:\(volumeProgress.progress)"
+    }
+    // MARK: audio
+    func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
+        if flag {
+           stopPlay()
         }
     }
-    
-    
     // MARK: tableview Datasourse
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("fileListCell", forIndexPath: indexPath) as! FileListTableViewCell
@@ -270,39 +276,27 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     }
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            
             let fileManager = NSFileManager.defaultManager()
             let path = appFilePath + myRecordFile[indexPath.row].valueForKey("fileName")!.description + ".acc"
             do{
                 try fileManager.removeItemAtPath(path)
-                
             }catch let error as NSError {
-                print("Could not fetch \(error), \(error.userInfo)")
+                print("Could not removeItemAtPath \(error), \(error.userInfo)")
             }
-            
-            //            从数据库中删除该项
+//            从数据库中删除该项
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             let managedContext = appDelegate.managedObjectContext
             managedContext.deleteObject(myRecordFile[indexPath.row])
-            NSLog("\(indexPath.row)")
             do {
-                //                保存删除的结果（使删除生效）
+//                保存删除的结果（使删除生效）
                 try managedContext.save()
-                
             }
             catch let error as NSError {
                 print("Could not save \(error), \(error.userInfo)")
             }
-            
-            //            再从数组中移除数据
+//            再从数组中移除数据
             myRecordFile.removeAtIndex(indexPath.row)
-            playButton.enabled = false
-            player = nil
-            if myRecordFile.count > 0 {
-                accPath = appFilePath + (myRecordFile[myRecordFile.count-1].valueForKey("fileName")?.description)! + ".acc"
-                playButton.enabled = true
-                
-            }
+            initPlayButton()
             // Delete the row from the data source
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             tableView.reloadData()
@@ -323,13 +317,9 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     }
     //MARK: 自定义函数
     func newRecordURL() -> String{
-        let designDate = NSDate()
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd_HH:mm:ss"
-        let designDateString = dateFormatter.stringFromDate(designDate)
+        let designDateString = dateString()
         let fileName = designDateString
         let path = appFilePath + fileName + ".acc"
-        
         //在数据中插入新项
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
@@ -350,8 +340,6 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         catch let error as NSError {
             print("Could not save \(error), \(error.userInfo)")
         }
-        
-        
         return path
     }
 
@@ -372,11 +360,9 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
             let path = appFilePath + fileNameLabel.text! + ".acc"
             let toPath = appFilePath + name + ".acc"
             try tempManager.moveItemAtPath(path, toPath: toPath)
-            
         }catch let error as NSError {
-            print("Could not fetch \(error), \(error.userInfo)")
+            print("Could not moveItemAtPath \(error), \(error.userInfo)")
         }
-        
         fileNameLabel.text = name
         
         myRecordFile[fileNameIndexPathRow!].setValue(name, forKey: "fileName")
@@ -394,6 +380,13 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
             print("Could not save \(error), \(error.userInfo)")
         }
     }
+    func dateString()->String {
+        let designDate = NSDate()
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd_HH:mm:ss"
+        return  dateFormatter.stringFromDate(designDate)
+    }
+
 }
 
 

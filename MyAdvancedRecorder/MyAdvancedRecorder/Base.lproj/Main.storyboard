@@ -78,13 +78,13 @@
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ojl-a9-qPr">
-                                <rect key="frame" x="460" y="1273" width="324" height="34"/>
+                                <rect key="frame" x="647" y="1160" width="324" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HaB-Od-8MT">
-                                <rect key="frame" x="532" y="1176" width="150" height="2"/>
+                                <rect key="frame" x="454" y="1176" width="150" height="2"/>
                             </progressView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FileName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="upM-nf-jFB">
                                 <rect key="frame" x="141" y="1145" width="312" height="33"/>
@@ -106,6 +106,12 @@
                                     <action selector="playRecord:" destination="pJj-MM-2oj" eventType="touchUpInside" id="xWN-R7-PK3"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="GMb-4F-iyb">
+                                <rect key="frame" x="452" y="1244" width="554" height="31"/>
+                                <connections>
+                                    <action selector="sliderChanged:" destination="pJj-MM-2oj" eventType="valueChanged" id="nqL-Gk-4zU"/>
+                                </connections>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -115,6 +121,7 @@
                         <outlet property="fileListTableView" destination="BGV-xz-jhU" id="tOe-sD-zxa"/>
                         <outlet property="fileNameLabel" destination="upM-nf-jFB" id="Y5W-HJ-Ip1"/>
                         <outlet property="playButton" destination="A08-6b-EY0" id="r4j-Wi-eQ3"/>
+                        <outlet property="playerSlider" destination="GMb-4F-iyb" id="hiT-2k-Jbw"/>
                         <outlet property="recordButton" destination="V2f-QK-X8L" id="Jhn-H5-rSg"/>
                         <outlet property="volumeLabel" destination="Ojl-a9-qPr" id="BHY-aS-vAk"/>
                         <outlet property="volumeProgress" destination="HaB-Od-8MT" id="x2Q-sC-eGQ"/>
