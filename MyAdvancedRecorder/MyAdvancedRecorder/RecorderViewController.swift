@@ -37,19 +37,31 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     /// 定时器线程，循环监测录音的音量大小
     var volumeTimer:NSTimer!
     var fileNameIndexPathRow :Int?
+    // MARK: IBOutlet
+    @IBOutlet weak var playerCurrentTimeLabel: UILabel!
     @IBOutlet weak var volumeLabel: UILabel!
     @IBOutlet weak var volumeProgress: UIProgressView!
     @IBOutlet weak var fileNameLabel: UILabel!
     @IBOutlet weak var playerSlider: UISlider!
     @IBOutlet weak var recordButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var fileListTableView: FileListTableView!
-    
-    @IBAction func sliderChanged(sender: AnyObject) {
-        player?.stop()
-        player?.currentTime = Double(playerSlider.value)
+    //MARK: IBAction
+    @IBAction func sliderTouchUpInside(sender: AnyObject) {
         player?.prepareToPlay()
         player?.play()
+    }
+    @IBAction func sliderTouchUpOutside(sender: AnyObject) {
+        player?.prepareToPlay()
+        player?.play()
+    }
+    @IBAction func slliderTouchDown(sender: AnyObject) {
+        player?.stop()
+    }
+    @IBAction func sliderChanged(sender: AnyObject) {
+        player?.currentTime = Double(playerSlider.value)
     }
     @IBAction func editFileNameButton(sender: AnyObject) {
         stopRecordAndPlay()
@@ -65,15 +77,53 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         alert.addAction(cancelAction)
         presentViewController(alert, animated: true, completion: nil)
     }
-    @IBAction func playRecord(sender: AnyObject) {
-        if !isPlaying {
-            startPlay()
+    @IBAction func nextRecord(sender: AnyObject) {
+        if isRecording {
+            print("Error can't play next record while recording")
         }else{
+            if let selectedIndex = fileListTableView.indexPathForSelectedRow {
+                if isPlaying {
+                    stopPlay()
+                }
+                player = nil
+                prepareForPlay(selectedIndex.row + 1)
+                let nextIndexPath=NSIndexPath(forRow: selectedIndex.row + 1, inSection: selectedIndex.section);
+                fileListTableView.selectRowAtIndexPath(nextIndexPath, animated: true, scrollPosition:.None)
+                canPlayNextOrPrevious(nextIndexPath.row)
+                startPlay()
+            }
+
+        }
+    
+    }
+    @IBAction func previousRecord(sender: AnyObject) {
+        if isRecording {
+            print("Error can't play previous record while recording")
+        }else{
+            if let selectedIndex = fileListTableView.indexPathForSelectedRow {
+                if isPlaying {
+                    stopPlay()
+                }
+                player = nil
+                prepareForPlay(selectedIndex.row - 1)
+                let previousIndexPath=NSIndexPath(forRow: selectedIndex.row - 1, inSection: selectedIndex.section);
+                fileListTableView.selectRowAtIndexPath(previousIndexPath, animated: true, scrollPosition:.None)
+                canPlayNextOrPrevious(previousIndexPath.row)
+                startPlay()
+            }
+            
+        }
+    }
+    @IBAction func playRecord(sender: AnyObject) {
+        if isPlaying {
             pausePlay()
+        }else{
+            startPlay()
         }
     }
     func startPlay(){
         isPlaying = !isPlaying
+        playerSlider.enabled = true
         playButton.setImage(UIImage.init(named: "pausePlay"), forState: UIControlState.Normal)
         if player == nil{
             do{
@@ -89,7 +139,6 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         volumeTimer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self,
             selector: "playTimer", userInfo: nil, repeats: true)
         playerSlider.maximumValue = Float(player!.duration)
-//        playerSlider.addTarget(self, action: "sliderChanged", forControlEvents: UIControlEvents.ValueChanged)
         player!.prepareToPlay()
         player!.play()
         recordButton.enabled = false
@@ -104,12 +153,16 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         volumeTimer = nil
     }
     func stopPlay(){
+        player!.stop()
         isPlaying = !isPlaying
         playButton.setImage(UIImage.init(named: "playRecord"), forState: UIControlState.Normal)
         recordButton.enabled = true
-        player!.stop()
+        
         volumeTimer.invalidate()
         volumeTimer = nil
+        playerCurrentTimeLabel.text = "0:0:0"
+        playerSlider.enabled = false
+        playerSlider.value = 0
     }
     @IBAction func record(sender: AnyObject) {
         if isRecording {
@@ -121,6 +174,7 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     }
     func startRecord() {
         accPath = newRecordURL()
+        playerSlider.enabled = false
         isRecording = !isRecording
         recordButton.setImage(UIImage.init(named: "stopRecord"),forState: UIControlState.Normal)
         do{
@@ -136,7 +190,6 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         recorder!.meteringEnabled = true
         volumeTimer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self,
             selector: "recordTimer", userInfo: nil, repeats: true)
-        
         playButton.enabled = false
         player = nil
     }
@@ -159,7 +212,9 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
+        playerSlider.enabled = false
+        nextButton.enabled = false
+        previousButton.enabled = false
         // Do any additional setup after loading the view, typically from a nib.
         isRecording = false
         isPlaying = false
@@ -237,6 +292,7 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         volumeProgress.progress = Float(maxVolume)
         volumeLabel.text = "播放音量:\(volumeProgress.progress)"
         playerSlider.value = Float(player!.currentTime)
+        playerCurrentTimeLabel.text = changeTimeFormat(player!.currentTime)
     }
     func recordTimer(){
         recorder!.updateMeters() // 刷新音量数据
@@ -263,6 +319,14 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         cellSelectColorView.backgroundColor = UIColor(white: 0.5, alpha: 1)
         cellSelectColorView.layer.masksToBounds = true
         cell.selectedBackgroundView = cellSelectColorView
+        let fileManager = NSFileManager.defaultManager()
+        let path = appFilePath + recordFile.valueForKey("fileName")!.description + ".acc"
+        do{
+            let dictionary = try fileManager.attributesOfItemAtPath(path) as NSDictionary
+            cell.fileSizeLabel.text = String((dictionary.fileSize())/1024)+"KB"
+        }catch let error as NSError {
+            print("Could not get attributes \(error), \(error.userInfo)")
+        }
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -309,13 +373,17 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     }
     //MARK: tableview delegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let recordFile = myRecordFile[indexPath.row]
-        fileNameLabel.text = recordFile.valueForKey("fileName")?.description
-        fileNameIndexPathRow = indexPath.row
-        accPath = appFilePath + (recordFile.valueForKey("fileName")?.description)! + ".acc"
+        prepareForPlay(indexPath.row)
+        canPlayNextOrPrevious(indexPath.row)
         stopRecordAndPlay()
     }
     //MARK: 自定义函数
+    func prepareForPlay(indexPathRow:Int){
+        let recordFile = myRecordFile[indexPathRow]
+        fileNameLabel.text = recordFile.valueForKey("fileName")?.description
+        fileNameIndexPathRow = indexPathRow
+        accPath = appFilePath + (recordFile.valueForKey("fileName")?.description)! + ".acc"
+    }
     func newRecordURL() -> String{
         let designDateString = dateString()
         let fileName = designDateString
@@ -345,7 +413,7 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
 
     func stopRecordAndPlay() {
         if isPlaying {
-            pausePlay()
+            stopPlay()
         }
         player = nil
         if isRecording {
@@ -386,7 +454,24 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         dateFormatter.dateFormat = "yyyy-MM-dd_HH:mm:ss"
         return  dateFormatter.stringFromDate(designDate)
     }
-
+    func canPlayNextOrPrevious(selectedIndexRow:Int){
+        if selectedIndexRow == (myRecordFile.count - 1) {
+            nextButton.enabled = false
+        }else{
+            nextButton.enabled = true
+        }
+        if selectedIndexRow == 0 {
+            previousButton.enabled = false
+        }else{
+            previousButton.enabled = true
+        }
+    }
+    func changeTimeFormat(time:Double)->String {
+        let hour = Int(time/3600)
+        let minute = Int((time%3600)/60)
+        let second = Int(time%60)
+        return String(hour)+":"+String(minute)+":"+String(second)
+    }
 }
 
 
