@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		566C89311C297386007CCDC7 /* FileListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566C89301C297386007CCDC7 /* FileListTableViewCell.swift */; };
+		56E08DE71C325DAB00A133A7 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E08DE61C325DAB00A133A7 /* SettingViewController.swift */; };
 		56EF2EE61C223ECA00A66F5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EF2EE51C223ECA00A66F5C /* AppDelegate.swift */; };
 		56EF2EE81C223ECA00A66F5C /* RecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EF2EE71C223ECA00A66F5C /* RecorderViewController.swift */; };
 		56EF2EEB1C223ECA00A66F5C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56EF2EE91C223ECA00A66F5C /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		566C89301C297386007CCDC7 /* FileListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListTableViewCell.swift; sourceTree = "<group>"; };
+		56E08DE61C325DAB00A133A7 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		56EF2EE21C223ECA00A66F5C /* MyAdvancedRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyAdvancedRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56EF2EE51C223ECA00A66F5C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56EF2EE71C223ECA00A66F5C /* RecorderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 			children = (
 				56EF2EE51C223ECA00A66F5C /* AppDelegate.swift */,
 				56EF2EE71C223ECA00A66F5C /* RecorderViewController.swift */,
+				56E08DE61C325DAB00A133A7 /* SettingViewController.swift */,
 				56EF2EE91C223ECA00A66F5C /* Main.storyboard */,
 				56F479291C2BAFD800601951 /* FileListTableView.swift */,
 				566C89301C297386007CCDC7 /* FileListTableViewCell.swift */,
@@ -150,6 +153,7 @@
 				56EF2EE61C223ECA00A66F5C /* AppDelegate.swift in Sources */,
 				56EF2EEE1C223ECA00A66F5C /* MyAdvancedRecorder.xcdatamodeld in Sources */,
 				566C89311C297386007CCDC7 /* FileListTableViewCell.swift in Sources */,
+				56E08DE71C325DAB00A133A7 /* SettingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,8 +9,8 @@
 
 /**
 *  @brief  实现基础的录音功能，参考自印象笔记：Swift－制作一个录音机
-*  只包含三个按钮，play、start、stop
-*  点击start开始录音，stop停止录音，play播放录音
+*  包含的按钮主要有，play、start、stop、next、previous
+*  点击start开始录音，stop停止录音，play播放录音，next和previous分别是下一个和上一个录音
 *
 *  @since 2015.12.16 1.0
 */
@@ -19,6 +19,7 @@ import AVFoundation
 import CoreData
 class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableViewDelegate,AVAudioPlayerDelegate{
     // MARK:变量定义
+//    let settingViewController:SettingViewController
     /// 录音路径
     let appFilePath = (NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0]) + "/"
     var myRecordFile = [NSManagedObject]()
@@ -39,13 +40,15 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     var fileNameIndexPathRow :Int?
     // MARK: IBOutlet
     @IBOutlet weak var playerCurrentTimeLabel: UILabel!
-    @IBOutlet weak var volumeLabel: UILabel!
-    @IBOutlet weak var volumeProgress: UIProgressView!
     @IBOutlet weak var fileNameLabel: UILabel!
+    @IBOutlet weak var volumeLabel: UILabel!
+
+    @IBOutlet weak var volumeProgress: UIProgressView!
     @IBOutlet weak var playerSlider: UISlider!
+    
+    @IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
-    @IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var fileListTableView: FileListTableView!
     //MARK: IBAction
@@ -68,7 +71,13 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         let alert = UIAlertController(title: "设置新名称", message: nil, preferredStyle: .Alert)
         let saveAction = UIAlertAction(title: "保存", style: .Default,handler: { (action:UIAlertAction) -> Void in
             let textField = alert.textFields!.first
-            self.saveFileName(textField!.text!)
+            let path = self.appFilePath + self.fileNameLabel.text! + ".acc"
+            let toPath = self.appFilePath + textField!.text! + ".acc"
+            self.saveFileName(textField!.text!,atPath: path, toPath: toPath)
+            self.fileNameLabel.text = textField!.text!
+            self.myRecordFile[self.fileNameIndexPathRow!].setValue(textField!.text!, forKey: "fileName")
+            self.accPath = self.appFilePath + textField!.text! + ".acc"
+            self.saveToCoreData()
             self.fileListTableView.reloadData()
         })
         let cancelAction = UIAlertAction(title: "取消", style: .Default) { (action: UIAlertAction) -> Void in }
@@ -76,6 +85,9 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
         presentViewController(alert, animated: true, completion: nil)
+    }
+    @IBAction func setting(sender: AnyObject) {
+        
     }
     @IBAction func nextRecord(sender: AnyObject) {
         if isRecording {
@@ -89,7 +101,7 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
                 prepareForPlay(selectedIndex.row + 1)
                 let nextIndexPath=NSIndexPath(forRow: selectedIndex.row + 1, inSection: selectedIndex.section);
                 fileListTableView.selectRowAtIndexPath(nextIndexPath, animated: true, scrollPosition:.None)
-                canPlayNextOrPrevious(nextIndexPath.row)
+                canPlayNextOrPrevious(nextIndexPath.row, fileCount: myRecordFile.count)
                 startPlay()
             }
 
@@ -108,7 +120,7 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
                 prepareForPlay(selectedIndex.row - 1)
                 let previousIndexPath=NSIndexPath(forRow: selectedIndex.row - 1, inSection: selectedIndex.section);
                 fileListTableView.selectRowAtIndexPath(previousIndexPath, animated: true, scrollPosition:.None)
-                canPlayNextOrPrevious(previousIndexPath.row)
+                canPlayNextOrPrevious(previousIndexPath.row, fileCount: myRecordFile.count)
                 startPlay()
             }
             
@@ -173,6 +185,7 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         }
     }
     func startRecord() {
+        recorderSettingDic = initSettingDic()
         accPath = newRecordURL()
         playerSlider.enabled = false
         isRecording = !isRecording
@@ -215,28 +228,18 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         playerSlider.enabled = false
         nextButton.enabled = false
         previousButton.enabled = false
-        // Do any additional setup after loading the view, typically from a nib.
         isRecording = false
         isPlaying = false
         initSession()
-        recorderSettingDic=[
-            AVFormatIDKey:NSNumber(unsignedInt: kAudioFormatMPEG4AAC),
-            AVNumberOfChannelsKey:2,
-            AVEncoderAudioQualityKey:AVAudioQuality.Medium.rawValue,
-            AVEncoderBitRateKey:320000,
-            AVSampleRateKey:44100.0
-        ]
-        view.backgroundColor = UIColor(white: 0.3, alpha: 1)
-        fileListTableView.backgroundView = UIView.init()
-        fileListTableView.backgroundView?.backgroundColor = UIColor(white: 0.4, alpha: 1)
-        
-        initMyRecordFile()
+        myRecordFile = initMyRecordFile()
+        recorderSettingDic = initSettingDic()
         initPlayButton()
-
+        view.backgroundColor = UIColor(hue: 1, saturation: 0, brightness: 0.7, alpha: 1)
+        fileListTableView.backgroundView = UIView.init()
+        fileListTableView.backgroundView?.backgroundColor = UIColor(hue: 1, saturation: 0, brightness: 0.8, alpha: 1)
     }
     override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-//        
+        super.viewWillAppear(animated)     
 //        let tempManager = NSFileManager.defaultManager()
 //        let path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0]
 //        do{
@@ -247,16 +250,54 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
 //            print("Could not fetch \(error), \(error.userInfo)")
 //        }
     }
-    func initMyRecordFile() {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
+    func initSettingDic()->[String:AnyObject]{
+        let settingObject = fetchSettingObject()
+        if settingObject.count > 0 {
+            print("find setting parameter")
+            let settingDic=[
+                AVFormatIDKey:settingObject[0].valueForKey("formatIDKey")!,
+                AVNumberOfChannelsKey:settingObject[0].valueForKey("numberOfChannelsKey")!,
+                AVEncoderAudioQualityKey:settingObject[0].valueForKey("qualityKey")!,
+                AVEncoderBitRateKey:settingObject[0].valueForKey("bitRateKey")!,
+                AVSampleRateKey:settingObject[0].valueForKey("sampleRateKey")!
+            ]
+            return settingDic
+        }else{
+            print("no find")
+            let settingDic=[
+                AVFormatIDKey:NSNumber(unsignedInt: kAudioFormatMPEG4AAC),
+                AVNumberOfChannelsKey:2,
+                AVEncoderAudioQualityKey:AVAudioQuality.Medium.rawValue,
+                AVEncoderBitRateKey:320000,
+                AVSampleRateKey:44100.0
+            ]
+            let managedContext = getManagedContext()
+            let entity = NSEntityDescription.entityForName("SettingParameter", inManagedObjectContext:managedContext)
+            let para = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+            para.setValue(NSNumber(unsignedInt: kAudioFormatMPEG4AAC), forKey: "formatIDKey")
+            para.setValue(2, forKey: "numberOfChannelsKey")
+            para.setValue(AVAudioQuality.Medium.rawValue, forKey: "qualityKey")
+            para.setValue(320000, forKey: "bitRateKey")
+            para.setValue(44100.0, forKey: "sampleRateKey")
+            do {
+                try managedContext.save()
+            }catch let error as NSError {
+                print("Could not save \(error), \(error.userInfo)")
+            }
+            return settingDic
+        }
+    }
+    func initMyRecordFile()->[NSManagedObject] {
+        let managedContext = getManagedContext()
         let fetchRequest = NSFetchRequest(entityName: "MyRecordFile")
+        var fileObject = [NSManagedObject]()
         do {
             let path = try managedContext.executeFetchRequest(fetchRequest)
-            myRecordFile = path as! [NSManagedObject]
+            fileObject = path as! [NSManagedObject]
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
+        return fileObject
     }
     func initSession(){
         /// 初始化录音器
@@ -281,6 +322,20 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    // MARK: - Navigation
+    /*
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "showSetting" {
+            volumeLabel.text = "showSetting"
+            let controller = segue.destinationViewController as! SettingViewController
+            controller.settingObject = settingPara[0]
+            
+        }
+    }*/
+    
     // MARK:定时器
     /**
      定时器响应函数，定时更新录音音量大小
@@ -316,7 +371,7 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         let intDuration = Int((recordFile.valueForKey("duration") as! Double))
         cell.recordDurationLabel.text = "Duration:" + String(intDuration) + " s"
         let cellSelectColorView = UIView()
-        cellSelectColorView.backgroundColor = UIColor(white: 0.5, alpha: 1)
+        cellSelectColorView.backgroundColor = UIColor(hue: 1, saturation: 0, brightness: 0.9, alpha: 1)
         cellSelectColorView.layer.masksToBounds = true
         cell.selectedBackgroundView = cellSelectColorView
         let fileManager = NSFileManager.defaultManager()
@@ -347,21 +402,16 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
             }catch let error as NSError {
                 print("Could not removeItemAtPath \(error), \(error.userInfo)")
             }
-//            从数据库中删除该项
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            let managedContext = appDelegate.managedObjectContext
+            let managedContext = getManagedContext()
             managedContext.deleteObject(myRecordFile[indexPath.row])
             do {
-//                保存删除的结果（使删除生效）
                 try managedContext.save()
             }
             catch let error as NSError {
                 print("Could not save \(error), \(error.userInfo)")
             }
-//            再从数组中移除数据
             myRecordFile.removeAtIndex(indexPath.row)
             initPlayButton()
-            // Delete the row from the data source
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             tableView.reloadData()
         } else if editingStyle == .Insert {
@@ -369,12 +419,12 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         }
     }
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        cell.backgroundColor = UIColor(white: 0.4, alpha: 1)
+        cell.backgroundColor = UIColor(hue: 1, saturation: 0, brightness: 0.85, alpha: 1)
     }
     //MARK: tableview delegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         prepareForPlay(indexPath.row)
-        canPlayNextOrPrevious(indexPath.row)
+        canPlayNextOrPrevious(indexPath.row, fileCount: myRecordFile.count)
         stopRecordAndPlay()
     }
     //MARK: 自定义函数
@@ -388,18 +438,12 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         let designDateString = dateString()
         let fileName = designDateString
         let path = appFilePath + fileName + ".acc"
-        //在数据中插入新项
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
-        //2
+        let managedContext = getManagedContext()
         let entity = NSEntityDescription.entityForName("MyRecordFile", inManagedObjectContext:managedContext)
         let recordFile = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
-        //3
         recordFile.setValue(fileName, forKey: "fileName")
         recordFile.setValue(designDateString, forKey: "recordDate")
-        //4
         do {
-            //下面这一步是是修改的结果保存到coredata中，前面几步只是在managedObjectContext中进行修改，还没有真正保存
             try managedContext.save()
             myRecordFile.append(recordFile)
             fileNameLabel.text = fileName
@@ -410,7 +454,6 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         }
         return path
     }
-
     func stopRecordAndPlay() {
         if isPlaying {
             stopPlay()
@@ -420,28 +463,20 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
             stopRecord()
             fileListTableView.reloadData()
         }
-        volumeLabel.text = "stop success"
     }
-    func saveFileName(name:String) {
+    func saveFileName(name:String,atPath:String,toPath:String) {
         let tempManager = NSFileManager.defaultManager()
         do{
-            let path = appFilePath + fileNameLabel.text! + ".acc"
-            let toPath = appFilePath + name + ".acc"
-            try tempManager.moveItemAtPath(path, toPath: toPath)
+            
+            try tempManager.moveItemAtPath(atPath, toPath: toPath)
         }catch let error as NSError {
             print("Could not moveItemAtPath \(error), \(error.userInfo)")
         }
-        fileNameLabel.text = name
         
-        myRecordFile[fileNameIndexPathRow!].setValue(name, forKey: "fileName")
-        accPath = appFilePath + name + ".acc"
-        saveToCoreData()
     }
     func saveToCoreData() {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
+        let managedContext = getManagedContext()
         do {
-            //下面这一步是是修改的结果保存到coredata中
             try managedContext.save()
         }
         catch let error as NSError {
@@ -454,8 +489,8 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         dateFormatter.dateFormat = "yyyy-MM-dd_HH:mm:ss"
         return  dateFormatter.stringFromDate(designDate)
     }
-    func canPlayNextOrPrevious(selectedIndexRow:Int){
-        if selectedIndexRow == (myRecordFile.count - 1) {
+    func canPlayNextOrPrevious(selectedIndexRow:Int,fileCount:Int){
+        if selectedIndexRow == (fileCount - 1) {
             nextButton.enabled = false
         }else{
             nextButton.enabled = true
@@ -472,6 +507,22 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         let second = Int(time%60)
         return String(hour)+":"+String(minute)+":"+String(second)
     }
+    func fetchSettingObject()->[NSManagedObject]{
+        var object=[NSManagedObject]()
+        let managedContext = getManagedContext()
+        let fetchRequest = NSFetchRequest(entityName: "SettingParameter")
+        do {
+            object = try managedContext.executeFetchRequest(fetchRequest) as! [NSManagedObject]
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        return object
+    }
+    func getManagedContext()->NSManagedObjectContext{
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        return appDelegate.managedObjectContext
+    }
 }
+
 
 

@@ -5,7 +5,15 @@
         <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="recordDate" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="SettingParameter" syncable="YES">
+        <attribute name="bitRateKey" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="formatIDKey" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="numberOfChannelsKey" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="qualityKey" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="sampleRateKey" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+    </entity>
     <elements>
         <element name="MyRecordFile" positionX="-63" positionY="-18" width="128" height="90"/>
+        <element name="SettingParameter" positionX="-63" positionY="9" width="128" height="120"/>
     </elements>
 </model>
