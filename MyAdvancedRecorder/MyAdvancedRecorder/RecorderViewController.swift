@@ -50,7 +50,11 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var playButton: UIButton!
+    
     @IBOutlet weak var fileListTableView: FileListTableView!
+    
+    @IBOutlet weak var sliderGroupView: UIView!
+    @IBOutlet weak var buttonGroupView: UIView!
     //MARK: IBAction
     @IBAction func sliderTouchUpInside(sender: AnyObject) {
         player?.prepareToPlay()
@@ -235,8 +239,15 @@ class RecorderViewController: UIViewController ,UITableViewDataSource ,UITableVi
         recorderSettingDic = initSettingDic()
         initPlayButton()
         view.backgroundColor = UIColor(hue: 1, saturation: 0, brightness: 0.7, alpha: 1)
+        sliderGroupView.backgroundColor = view.backgroundColor
+        buttonGroupView.backgroundColor = view.backgroundColor
+        
         fileListTableView.backgroundView = UIView.init()
         fileListTableView.backgroundView?.backgroundColor = UIColor(hue: 1, saturation: 0, brightness: 0.8, alpha: 1)
+        
+        self.navigationController!.navigationBar.barTintColor = UIColor(hue: 1, saturation: 0, brightness: 0.8, alpha: 1)
+
+
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)     
