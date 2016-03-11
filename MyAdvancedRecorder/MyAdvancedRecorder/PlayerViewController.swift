@@ -80,8 +80,6 @@ class PlayerViewController: UIViewController {
     // MARK:初始化
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.grayColor()
-
         configureView()
         // Do any additional setup after loading the view.
         isPlaying = false

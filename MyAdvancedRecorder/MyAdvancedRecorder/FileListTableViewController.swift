@@ -16,7 +16,7 @@ class FileListTableViewController: UITableViewController {
         super.viewDidLoad()
         //set backgroundcolor of tableview
         tableView.backgroundView = UIView.init()
-        tableView.backgroundView?.backgroundColor = UIColor.grayColor()
+        tableView.backgroundView?.backgroundColor = UIColor.blackColor()
             // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
