@@ -7,22 +7,48 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		566C892F1C29730A007CCDC7 /* FileListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566C892E1C29730A007CCDC7 /* FileListTableViewController.swift */; };
+		5639E6A81C91212600265113 /* RecordPalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5639E6A71C91212600265113 /* RecordPalTests.swift */; };
+		5639E6BE1C913D6700265113 /* RecordFilePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5639E6BD1C913D6700265113 /* RecordFilePlayer.swift */; };
 		566C89311C297386007CCDC7 /* FileListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566C89301C297386007CCDC7 /* FileListTableViewCell.swift */; };
-		56E3FAC01C2A28DA000BE3FE /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E3FABF1C2A28DA000BE3FE /* PlayerViewController.swift */; };
+		56E08DE71C325DAB00A133A7 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E08DE61C325DAB00A133A7 /* SettingViewController.swift */; };
 		56EF2EE61C223ECA00A66F5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EF2EE51C223ECA00A66F5C /* AppDelegate.swift */; };
 		56EF2EE81C223ECA00A66F5C /* RecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EF2EE71C223ECA00A66F5C /* RecorderViewController.swift */; };
 		56EF2EEB1C223ECA00A66F5C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56EF2EE91C223ECA00A66F5C /* Main.storyboard */; };
 		56EF2EEE1C223ECA00A66F5C /* MyAdvancedRecorder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 56EF2EEC1C223ECA00A66F5C /* MyAdvancedRecorder.xcdatamodeld */; };
 		56EF2EF01C223ECA00A66F5C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56EF2EEF1C223ECA00A66F5C /* Assets.xcassets */; };
 		56EF2EF31C223ECA00A66F5C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56EF2EF11C223ECA00A66F5C /* LaunchScreen.storyboard */; };
+		56F4792A1C2BAFD800601951 /* FileListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F479291C2BAFD800601951 /* FileListTableView.swift */; };
+		56F71DF41C91C4C300878BC4 /* RecordPalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F71DF31C91C4C300878BC4 /* RecordPalUITests.swift */; };
+		56F71DFC1C91CABB00878BC4 /* Contant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F71DFB1C91CABB00878BC4 /* Contant.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		5639E6AA1C91212600265113 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56EF2EDA1C223ECA00A66F5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 56EF2EE11C223ECA00A66F5C;
+			remoteInfo = MyAdvancedRecorder;
+		};
+		56F71DF61C91C4C300878BC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56EF2EDA1C223ECA00A66F5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 56EF2EE11C223ECA00A66F5C;
+			remoteInfo = MyAdvancedRecorder;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		566C892E1C29730A007CCDC7 /* FileListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListTableViewController.swift; sourceTree = "<group>"; };
+		5639E6A51C91212600265113 /* RecordPalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecordPalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5639E6A71C91212600265113 /* RecordPalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPalTests.swift; sourceTree = "<group>"; };
+		5639E6A91C91212600265113 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5639E6B51C9122C300265113 /* RecordPalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPalUITests.swift; sourceTree = "<group>"; };
+		5639E6B71C9122C300265113 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5639E6BD1C913D6700265113 /* RecordFilePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFilePlayer.swift; sourceTree = "<group>"; };
 		566C89301C297386007CCDC7 /* FileListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListTableViewCell.swift; sourceTree = "<group>"; };
-		56E3FABF1C2A28DA000BE3FE /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
-		56EF2EE21C223ECA00A66F5C /* MyAdvancedRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyAdvancedRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		56E08DE61C325DAB00A133A7 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		56EF2EE21C223ECA00A66F5C /* RecordPal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecordPal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56EF2EE51C223ECA00A66F5C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56EF2EE71C223ECA00A66F5C /* RecorderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderViewController.swift; sourceTree = "<group>"; };
 		56EF2EEA1C223ECA00A66F5C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -30,10 +56,29 @@
 		56EF2EEF1C223ECA00A66F5C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56EF2EF21C223ECA00A66F5C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56EF2EF41C223ECA00A66F5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56F479291C2BAFD800601951 /* FileListTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListTableView.swift; sourceTree = "<group>"; };
+		56F71DF11C91C4C300878BC4 /* RecordPalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecordPalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		56F71DF31C91C4C300878BC4 /* RecordPalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPalUITests.swift; sourceTree = "<group>"; };
+		56F71DF51C91C4C300878BC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56F71DFB1C91CABB00878BC4 /* Contant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contant.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5639E6A21C91212600265113 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		56EF2EDF1C223ECA00A66F5C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56F71DEE1C91C4C300878BC4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -43,10 +88,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5639E6A61C91212600265113 /* RecordPalTests */ = {
+			isa = PBXGroup;
+			children = (
+				5639E6A71C91212600265113 /* RecordPalTests.swift */,
+				5639E6A91C91212600265113 /* Info.plist */,
+			);
+			path = RecordPalTests;
+			sourceTree = "<group>";
+		};
+		5639E6B41C9122C300265113 /* RecordPalUITests */ = {
+			isa = PBXGroup;
+			children = (
+				5639E6B51C9122C300265113 /* RecordPalUITests.swift */,
+				5639E6B71C9122C300265113 /* Info.plist */,
+			);
+			path = RecordPalUITests;
+			sourceTree = "<group>";
+		};
 		56EF2ED91C223ECA00A66F5C = {
 			isa = PBXGroup;
 			children = (
 				56EF2EE41C223ECA00A66F5C /* MyAdvancedRecorder */,
+				5639E6A61C91212600265113 /* RecordPalTests */,
+				5639E6B41C9122C300265113 /* RecordPalUITests */,
+				56F71DF21C91C4C300878BC4 /* RecordPalUITests */,
 				56EF2EE31C223ECA00A66F5C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,7 +120,9 @@
 		56EF2EE31C223ECA00A66F5C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				56EF2EE21C223ECA00A66F5C /* MyAdvancedRecorder.app */,
+				56EF2EE21C223ECA00A66F5C /* RecordPal.app */,
+				5639E6A51C91212600265113 /* RecordPalTests.xctest */,
+				56F71DF11C91C4C300878BC4 /* RecordPalUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -63,22 +131,51 @@
 			isa = PBXGroup;
 			children = (
 				56EF2EE51C223ECA00A66F5C /* AppDelegate.swift */,
+				5639E6BD1C913D6700265113 /* RecordFilePlayer.swift */,
 				56EF2EE71C223ECA00A66F5C /* RecorderViewController.swift */,
+				56E08DE61C325DAB00A133A7 /* SettingViewController.swift */,
 				56EF2EE91C223ECA00A66F5C /* Main.storyboard */,
+				56F479291C2BAFD800601951 /* FileListTableView.swift */,
+				566C89301C297386007CCDC7 /* FileListTableViewCell.swift */,
 				56EF2EEF1C223ECA00A66F5C /* Assets.xcassets */,
 				56EF2EF11C223ECA00A66F5C /* LaunchScreen.storyboard */,
 				56EF2EF41C223ECA00A66F5C /* Info.plist */,
-				566C892E1C29730A007CCDC7 /* FileListTableViewController.swift */,
-				566C89301C297386007CCDC7 /* FileListTableViewCell.swift */,
-				56E3FABF1C2A28DA000BE3FE /* PlayerViewController.swift */,
 				56EF2EEC1C223ECA00A66F5C /* MyAdvancedRecorder.xcdatamodeld */,
+				56F71DFB1C91CABB00878BC4 /* Contant.swift */,
 			);
 			path = MyAdvancedRecorder;
+			sourceTree = "<group>";
+		};
+		56F71DF21C91C4C300878BC4 /* RecordPalUITests */ = {
+			isa = PBXGroup;
+			children = (
+				56F71DF31C91C4C300878BC4 /* RecordPalUITests.swift */,
+				56F71DF51C91C4C300878BC4 /* Info.plist */,
+			);
+			path = RecordPalUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5639E6A41C91212600265113 /* RecordPalTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5639E6AC1C91212600265113 /* Build configuration list for PBXNativeTarget "RecordPalTests" */;
+			buildPhases = (
+				5639E6A11C91212600265113 /* Sources */,
+				5639E6A21C91212600265113 /* Frameworks */,
+				5639E6A31C91212600265113 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5639E6AB1C91212600265113 /* PBXTargetDependency */,
+			);
+			name = RecordPalTests;
+			productName = RecordPalTests;
+			productReference = 5639E6A51C91212600265113 /* RecordPalTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		56EF2EE11C223ECA00A66F5C /* MyAdvancedRecorder */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 56EF2EF71C223ECA00A66F5C /* Build configuration list for PBXNativeTarget "MyAdvancedRecorder" */;
@@ -93,8 +190,26 @@
 			);
 			name = MyAdvancedRecorder;
 			productName = MyAdvancedRecorder;
-			productReference = 56EF2EE21C223ECA00A66F5C /* MyAdvancedRecorder.app */;
+			productReference = 56EF2EE21C223ECA00A66F5C /* RecordPal.app */;
 			productType = "com.apple.product-type.application";
+		};
+		56F71DF01C91C4C300878BC4 /* RecordPalUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 56F71DF81C91C4C300878BC4 /* Build configuration list for PBXNativeTarget "RecordPalUITests" */;
+			buildPhases = (
+				56F71DED1C91C4C300878BC4 /* Sources */,
+				56F71DEE1C91C4C300878BC4 /* Frameworks */,
+				56F71DEF1C91C4C300878BC4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				56F71DF71C91C4C300878BC4 /* PBXTargetDependency */,
+			);
+			name = RecordPalUITests;
+			productName = RecordPalUITests;
+			productReference = 56F71DF11C91C4C300878BC4 /* RecordPalUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -102,13 +217,23 @@
 		56EF2EDA1C223ECA00A66F5C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Linsw;
 				TargetAttributes = {
+					5639E6A41C91212600265113 = {
+						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 4F6NMKB449;
+						TestTargetID = 56EF2EE11C223ECA00A66F5C;
+					};
 					56EF2EE11C223ECA00A66F5C = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = 4F6NMKB449;
+					};
+					56F71DF01C91C4C300878BC4 = {
+						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 4F6NMKB449;
+						TestTargetID = 56EF2EE11C223ECA00A66F5C;
 					};
 				};
 			};
@@ -126,11 +251,20 @@
 			projectRoot = "";
 			targets = (
 				56EF2EE11C223ECA00A66F5C /* MyAdvancedRecorder */,
+				5639E6A41C91212600265113 /* RecordPalTests */,
+				56F71DF01C91C4C300878BC4 /* RecordPalUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5639E6A31C91212600265113 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		56EF2EE01C223ECA00A66F5C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -141,23 +275,61 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		56F71DEF1C91C4C300878BC4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5639E6A11C91212600265113 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5639E6A81C91212600265113 /* RecordPalTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		56EF2EDE1C223ECA00A66F5C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				56EF2EE81C223ECA00A66F5C /* RecorderViewController.swift in Sources */,
-				566C892F1C29730A007CCDC7 /* FileListTableViewController.swift in Sources */,
+				56F4792A1C2BAFD800601951 /* FileListTableView.swift in Sources */,
 				56EF2EE61C223ECA00A66F5C /* AppDelegate.swift in Sources */,
 				56EF2EEE1C223ECA00A66F5C /* MyAdvancedRecorder.xcdatamodeld in Sources */,
+				5639E6BE1C913D6700265113 /* RecordFilePlayer.swift in Sources */,
 				566C89311C297386007CCDC7 /* FileListTableViewCell.swift in Sources */,
-				56E3FAC01C2A28DA000BE3FE /* PlayerViewController.swift in Sources */,
+				56E08DE71C325DAB00A133A7 /* SettingViewController.swift in Sources */,
+				56F71DFC1C91CABB00878BC4 /* Contant.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56F71DED1C91C4C300878BC4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56F71DF41C91C4C300878BC4 /* RecordPalUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5639E6AB1C91212600265113 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 56EF2EE11C223ECA00A66F5C /* MyAdvancedRecorder */;
+			targetProxy = 5639E6AA1C91212600265113 /* PBXContainerItemProxy */;
+		};
+		56F71DF71C91C4C300878BC4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 56EF2EE11C223ECA00A66F5C /* MyAdvancedRecorder */;
+			targetProxy = 56F71DF61C91C4C300878BC4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		56EF2EE91C223ECA00A66F5C /* Main.storyboard */ = {
@@ -179,6 +351,32 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		5639E6AD1C91212600265113 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = RecordPalTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = lsw.self.RecordPalTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RecordPal.app/RecordPal";
+			};
+			name = Debug;
+		};
+		5639E6AE1C91212600265113 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = RecordPalTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = lsw.self.RecordPalTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RecordPal.app/RecordPal";
+			};
+			name = Release;
+		};
 		56EF2EF51C223ECA00A66F5C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -266,10 +464,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = MyAdvancedRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = lsw.self.MyAdvancedRecorder;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = RecordPal;
 			};
 			name = Debug;
 		};
@@ -277,16 +476,52 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = MyAdvancedRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = lsw.self.MyAdvancedRecorder;
+				PRODUCT_NAME = RecordPal;
+			};
+			name = Release;
+		};
+		56F71DF91C91C4C300878BC4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = RecordPalUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = lsw.self.RecordPalUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = MyAdvancedRecorder;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		56F71DFA1C91C4C300878BC4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = RecordPalUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = lsw.self.RecordPalUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = MyAdvancedRecorder;
+				USES_XCTRUNNER = YES;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5639E6AC1C91212600265113 /* Build configuration list for PBXNativeTarget "RecordPalTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5639E6AD1C91212600265113 /* Debug */,
+				5639E6AE1C91212600265113 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		56EF2EDD1C223ECA00A66F5C /* Build configuration list for PBXProject "MyAdvancedRecorder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -304,6 +539,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		56F71DF81C91C4C300878BC4 /* Build configuration list for PBXNativeTarget "RecordPalUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56F71DF91C91C4C300878BC4 /* Debug */,
+				56F71DFA1C91C4C300878BC4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 
