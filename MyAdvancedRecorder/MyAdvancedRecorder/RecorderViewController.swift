@@ -17,6 +17,9 @@
 import UIKit
 import AVFoundation
 import CoreData
+
+let theme = themeOne
+
 class RecorderViewController: UIViewController {
     // MARK:变量定义
     let appFilePath = (NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0]) + "/"
@@ -133,7 +136,7 @@ class RecorderViewController: UIViewController {
         //开启仪表计数功能
         player!.meteringEnabled = true
         volumeTimer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self,
-            selector: "playTimer", userInfo: nil, repeats: true)
+            selector: #selector(RecorderViewController.playTimer), userInfo: nil, repeats: true)
         playerSlider.maximumValue = Float(player!.duration)
         player!.prepareToPlay()
         player!.play()
@@ -187,7 +190,7 @@ class RecorderViewController: UIViewController {
         //开启仪表计数功能
         recorder!.meteringEnabled = true
         volumeTimer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self,
-            selector: "recordTimer", userInfo: nil, repeats: true)
+            selector: #selector(RecorderViewController.recordTimer), userInfo: nil, repeats: true)
         playButton.enabled = false
         player = nil
     }
@@ -219,11 +222,11 @@ class RecorderViewController: UIViewController {
         myRecordFile = initMyRecordFile()
         recorderSettingDic = initSettingDic()
         initPlayButton()
-        view.backgroundColor = themeOne.viewBackgroundColor
+        view.backgroundColor = theme.viewBackgroundColor
         fileListTableView.backgroundView = UIView.init()
-        fileListTableView.backgroundView?.backgroundColor = themeOne.tableViewBackgroundColor
+        fileListTableView.backgroundView?.backgroundColor = theme.tableViewBackgroundColor
         
-        self.navigationController!.navigationBar.barTintColor = themeOne.navigationBarColor
+        self.navigationController!.navigationBar.barTintColor = theme.navigationBarColor
 
 
     }
@@ -425,7 +428,7 @@ class RecorderViewController: UIViewController {
 //MARK: TableViewDelegate
 extension RecorderViewController:UITableViewDelegate{
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        cell.backgroundColor = themeOne.tableViewCellBackgroundColor
+        cell.backgroundColor = theme.tableViewCellBackgroundColor
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         prepareForPlay(indexPath.row)
@@ -443,7 +446,7 @@ extension RecorderViewController:UITableViewDataSource{
         let intDuration = Int((recordFile.valueForKey("duration") as! Double))
         cell.recordDurationLabel.text = "Duration:" + String(intDuration) + " s"
         let cellSelectColorView = UIView()
-        cellSelectColorView.backgroundColor = themeOne.tableViewCellSeletedBackgroundColor
+        cellSelectColorView.backgroundColor = theme.tableViewCellSeletedBackgroundColor
         cellSelectColorView.layer.masksToBounds = true
         cell.selectedBackgroundView = cellSelectColorView
         let fileManager = NSFileManager.defaultManager()
