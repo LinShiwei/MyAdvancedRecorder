@@ -19,7 +19,7 @@ class SettingViewController: UIViewController {
         initView()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if settingObject != nil{
             updateSettingParameter(settingObject!,bitRateSegmentIndex: bitRateSegment.selectedSegmentIndex)
@@ -35,7 +35,7 @@ class SettingViewController: UIViewController {
     func initView(){
         settingObject = fetchSettingObject()
         if settingObject != nil{
-            let bitRate = Int(settingObject?.valueForKey("bitRateKey") as!Int)
+            let bitRate = Int(settingObject?.value(forKey: "bitRateKey") as!Int)
             bitRateSegment.selectedSegmentIndex = setBitRateSegmentIndex(bitRate)
         }
     }
@@ -69,7 +69,7 @@ class SettingViewController: UIViewController {
         default: return 44100.0
         }
     }*/
-    func transformBitRate(segmentIndex:Int)->Int{
+    func transformBitRate(_ segmentIndex:Int)->Int{
         switch segmentIndex{
         case 0:return 128_000
         case 1:return 160_000
@@ -78,7 +78,7 @@ class SettingViewController: UIViewController {
         default:return 320_000
         }
     }
-    func setBitRateSegmentIndex(bitRate:Int)->Int{
+    func setBitRateSegmentIndex(_ bitRate:Int)->Int{
         switch bitRate{
         case 128_000:return 0
         case 160_000:return 1
@@ -87,14 +87,14 @@ class SettingViewController: UIViewController {
         default:return 3
         }
     }
-    func updateSettingParameter(managedObject:NSManagedObject,bitRateSegmentIndex:Int){
+    func updateSettingParameter(_ managedObject:NSManagedObject,bitRateSegmentIndex:Int){
         let bitRate = transformBitRate(bitRateSegmentIndex)
-        managedObject.setValue(NSNumber(unsignedInt: kAudioFormatMPEG4AAC), forKey: "formatIDKey")
-        managedObject.setValue(AVAudioQuality.Medium.rawValue, forKey: "qualityKey")
+        managedObject.setValue(NSNumber(value: kAudioFormatMPEG4AAC as UInt32), forKey: "formatIDKey")
+        managedObject.setValue(AVAudioQuality.medium.rawValue, forKey: "qualityKey")
         managedObject.setValue(2, forKey: "numberOfChannelsKey")
         managedObject.setValue(bitRate, forKey: "bitRateKey")
         managedObject.setValue(44100.0, forKey: "sampleRateKey")
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
         do {
             try managedContext.save()
@@ -104,11 +104,11 @@ class SettingViewController: UIViewController {
     }
     func fetchSettingObject()->NSManagedObject{
         var object=[NSManagedObject]()
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
-        let fetchRequest = NSFetchRequest(entityName: "SettingParameter")
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "SettingParameter")
         do {
-            object = try managedContext.executeFetchRequest(fetchRequest) as! [NSManagedObject]
+            object = try managedContext.fetch(fetchRequest) as! [NSManagedObject]
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }

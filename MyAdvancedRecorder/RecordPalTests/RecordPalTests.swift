@@ -15,7 +15,7 @@ class RecordPalTests: XCTestCase {
     var navigationController: UINavigationController!
     override func setUp() {
         super.setUp()
-        navigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("NavigationController") as! UINavigationController
+        navigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NavigationController") as! UINavigationController
         viewController = navigationController.topViewController as! RecorderViewController
         let _ = viewController.view
 
@@ -25,7 +25,7 @@ class RecordPalTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         let managedContext = viewController.getManagedContext()
         for object in viewController.myRecordFile {
-            managedContext.deleteObject(object)
+            managedContext.delete(object)
         }
         do {
             try managedContext.save()
@@ -49,19 +49,19 @@ class RecordPalTests: XCTestCase {
     func testRecordAndPlay(){
         
         viewController.startRecord()
-        XCTAssertTrue(viewController.recorder!.recording)
+        XCTAssertTrue(viewController.recorder!.isRecording)
         viewController.stopRecord()
         XCTAssertNil(viewController.recorder)
         
         viewController.startPlay()
-        XCTAssertTrue(viewController.player!.playing)
+        XCTAssertTrue(viewController.player!.isPlaying)
         viewController.stopPlay()
-        XCTAssertFalse(viewController.player!.playing)
+        XCTAssertFalse(viewController.player!.isPlaying)
     }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }
